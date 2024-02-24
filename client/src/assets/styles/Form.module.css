@@ -1,0 +1,13 @@
+.Wrapper {
+    flex: 8;
+    display: flex;
+    height: inherit;
+    justify-content: center;
+    align-items: center;
+}
+
+.Form {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 50px;
+    border-radius: 20px;
+}
