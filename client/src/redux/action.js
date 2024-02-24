@@ -1,27 +1,41 @@
-import { v4 as uuid } from "uuid";
+export const ACCOUNT_SETUP = "ACCOUNT_SETUP";
+export const LOGOUT = "LOGOUT";
 
-export const ADD_USER = "ADD USER";
-export const EDIT_USER = "EDIT_USER";
-export const DELETE_USER = "DELETE_USER";
+export const ADD_TASK = "ADD TASK";
+export const EDIT_TASK = "EDIT_TASK";
+export const DELETE_TASK = "DELETE_TASK";
 
-export const addUserAction = (value, dispatch) => {
+export const accountSetup = (value, dispatch) => {
   dispatch({
-    type: ADD_USER,
+    type: ACCOUNT_SETUP,
     payload: {
       ...value,
-      id: uuid(),
     },
   });
 };
-export const editUserAction = (value, dispatch) => {
+export const logout = (dispatch) => {
   dispatch({
-    type: EDIT_USER,
+    type: LOGOUT,
+  });
+};
+
+export const addTaskAction = (value, dispatch) => {
+  dispatch({
+    type: ADD_TASK,
+    payload: {
+      ...value,
+    },
+  });
+};
+export const editTaskAction = (value, dispatch) => {
+  dispatch({
+    type: EDIT_TASK,
     payload: value,
   });
 };
-export const deleteUserAction = (id, dispatch) => {
+export const deleteTaskAction = (id, dispatch) => {
   dispatch({
-    type: DELETE_USER,
+    type: DELETE_TASK,
     payload: id,
   });
 };

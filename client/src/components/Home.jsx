@@ -1,7 +1,7 @@
 import React from "react";
 import Navigation from "./Navigation";
 import { Outlet } from "react-router-dom";
-import style from "../assets/styles/Home.module.css"
+import style from "../assets/styles/Home.module.css";
 
 const Home = () => {
   return (

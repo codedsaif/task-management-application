@@ -17,7 +17,7 @@
     font-weight: bold;
     color: darkslategray;
     text-align: center;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
 }
 
 
@@ -50,6 +50,27 @@
     cursor: pointer;
 }
 
-.form-button:hover {
+.form-button:hover,
+.form-button:disabled {
     background-color: #1d4ed8;
+}
+
+.form-button:disabled {
+    cursor: not-allowed;
+}
+
+.toggle {
+    margin-top: 8px;
+    text-align: center;
+}
+
+.toggle button {
+    font-weight: 500;
+    border: none;
+    color: #2563eb;
+}
+
+.toggle button:hover {
+    text-decoration: underline;
+    color: #1d4ed8;
 }

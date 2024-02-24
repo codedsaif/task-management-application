@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUserAction } from "../redux/action";
+// import { deleteTaskAction } from "../redux/action";
 import { useNavigate } from "react-router-dom";
 import style from "../assets/styles/UserList.module.css";
 
@@ -101,7 +101,7 @@ const UserList = () => {
                     </td>
                     <td>
                       <button
-                        onClick={() => deleteUserAction(user.id, dispatch)}
+                      // onClick={() => deleteTaskAction(user.id, dispatch)}
                       >
                         Delete
                       </button>

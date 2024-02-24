@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { addUserAction } from "../redux/action";
+// import { addTaskAction } from "../redux/action";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { useNavigate } from "react-router-dom";
-import style from "../assets/styles/Form.module.css"
+import style from "../assets/styles/Account.module.css";
+
 const Form = () => {
   const [value, setValue] = useState({
     name: "",
@@ -32,7 +33,7 @@ const Form = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(value);
-    addUserAction(value, dispatch);
+    // addTaskAction(value, dispatch);
     toast.success(`User ${value.name} added Successfully`);
     setValue({ name: "", email: "", phone: "" });
     setTimeout(() => {

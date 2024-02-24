@@ -1,42 +1,47 @@
-import { ADD_USER, DELETE_USER, EDIT_USER } from "./action";
+import {
+  ACCOUNT_SETUP,
+  LOGOUT,
+  ADD_TASK,
+  DELETE_TASK,
+  EDIT_TASK,
+} from "./action";
 
 let initialData = {
-  users: JSON.parse(localStorage.getItem("users")) || [],
+  user: JSON.parse(localStorage.getItem("user")) || {},
+  tasks: JSON.parse(localStorage.getItem("tasks")) || [],
+  token: JSON.parse(localStorage.getItem("token")) || "",
 };
 
 const reducer = (state = initialData, action) => {
   switch (action.type) {
-    case ADD_USER: {
-      state = {
-        ...state,
-        users: [...state.users, action.payload],
-      };
-      localStorage.setItem("users", JSON.stringify(state.users));
-      return state;
-    }
-    case EDIT_USER: {
-      if (state.users && state.users.length > 0) {
-        state.users = state.users.map((user) => {
-          if (user.id === action.payload.id) {
-            user.name = action.payload.name;
-            user.email = action.payload.email;
-            user.phone = action.payload.phone;
-          }
-          return user;
-        });
-        localStorage.setItem("users", JSON.stringify(state.users));
-        return state;
-      }
-      break;
-    }
-    case DELETE_USER: {
-      let updatedUsers = state.users.filter((user) => {
-        return user.id !== action.payload;
-      });
-      localStorage.setItem("users", JSON.stringify(updatedUsers));
+    case ACCOUNT_SETUP: {
+      const { user, token } = action.payload;
       return {
         ...state,
-        users: updatedUsers,
+        user: user,
+        token: token,
+      };
+    }
+    case LOGOUT: {
+      return {
+        ...state,
+        user: {},
+        token: "",
+      };
+    }
+    case ADD_TASK: {
+      state = {
+        ...state,
+      };
+    }
+    case EDIT_TASK: {
+      return {
+        ...state,
+      };
+    }
+    case DELETE_TASK: {
+      return {
+        ...state,
       };
     }
     default: {

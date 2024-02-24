@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { editUserAction } from "../redux/action";
+// import { editTaskAction } from "../redux/action";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { useNavigate } from "react-router-dom";
-import style from "../assets/styles/Form.module.css";
+import style from "../assets/styles/Account.module.css";
 
 const Edit = () => {
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const Edit = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // console.log("HandleSubmit", value);
-    editUserAction(value, dispatch);
+    // editTaskAction(value, dispatch);
     toast.success(`User ${value.name} Edited Successfully`);
     setValue({ name: "", email: "", phone: "" });
     setTimeout(() => {
