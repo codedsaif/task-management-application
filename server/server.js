@@ -10,6 +10,7 @@ const connectDB = require("./db/connect");
 
 // routers
 const authRouter = require("./routes/authRoutes.js");
+const taskRouter = require("./routes/taskRoutes.js");
 
 if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 app.use(cors());
@@ -23,6 +24,7 @@ app.get("/api/v1", (req, res) => {
   res.json({ msg: "Version 1 API" });
 });
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/task", taskRouter);
 
 app.all("*", (request, response) => {
   response.json({ msg: "Sorry route doesn't exist" });
