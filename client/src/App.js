@@ -1,10 +1,10 @@
 import { Routes, Route } from "react-router-dom";
-import Form from "./components/Form";
+import CreateTask from "./components/CreateTask";
 import NotFound from "./components/NotFound";
 import Home from "./components/Home";
 import Account from "./components/Account";
-import UserList from "./components/UserList";
-import Edit from "./components/Edit";
+import TaskList from "./components/TaskList";
+import EditTask from "./components/EditTask";
 import ProtectedRoute from "./components/ProtuctedRoute";
 function App() {
   return (
@@ -17,9 +17,9 @@ function App() {
           </ProtectedRoute>
         }
       >
-        <Route index={true} element={<UserList />} />
-        <Route path="add" element={<Form />} />
-        <Route path="edit/:id" element={<Edit />} />
+        <Route index={true} element={<TaskList />} />
+        <Route path="add" element={<CreateTask />} />
+        <Route path="edit/:id" element={<EditTask />} />
       </Route>
       <Route path="/account" element={<Account />} />
       <Route path="*" element={<NotFound />} />

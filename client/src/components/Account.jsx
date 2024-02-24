@@ -97,7 +97,7 @@ const Account = () => {
               Your name
             </label>
             <input
-              type="name"
+              type="text"
               id="name"
               className={style["form-input"]}
               placeholder="Enter you name"

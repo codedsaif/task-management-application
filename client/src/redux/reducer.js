@@ -1,14 +1,7 @@
-import {
-  ACCOUNT_SETUP,
-  LOGOUT,
-  ADD_TASK,
-  DELETE_TASK,
-  EDIT_TASK,
-} from "./action";
+import { ACCOUNT_SETUP, LOGOUT } from "./action";
 
 let initialData = {
   user: JSON.parse(localStorage.getItem("user")) || {},
-  tasks: JSON.parse(localStorage.getItem("tasks")) || [],
   token: JSON.parse(localStorage.getItem("token")) || "",
 };
 
@@ -27,21 +20,6 @@ const reducer = (state = initialData, action) => {
         ...state,
         user: {},
         token: "",
-      };
-    }
-    case ADD_TASK: {
-      state = {
-        ...state,
-      };
-    }
-    case EDIT_TASK: {
-      return {
-        ...state,
-      };
-    }
-    case DELETE_TASK: {
-      return {
-        ...state,
       };
     }
     default: {

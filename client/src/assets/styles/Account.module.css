@@ -40,6 +40,16 @@
     border-radius: 0.5rem;
 }
 
+.form-input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+.form-input:hover {
+    border-color: #a5b4fc;
+}
+
 .form-button {
     width: 100%;
     padding: 0.625rem;
@@ -73,4 +83,35 @@
 .toggle button:hover {
     text-decoration: underline;
     color: #1d4ed8;
+}
+
+.create-task-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.create-task-wrapper .form-container {
+    max-width: 500px;
+    width: 100%;
+}
+
+.create-task-wrapper textarea {
+    min-height: 160px;
+    max-width: 428px;
+}
+
+.form-input[type="date"] {
+    appearance: none;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    padding: 0.625rem;
+    width: 100%;
+    font-size: 0.875rem;
+    color: #111827;
+    background-color: #f9fafb;
+    margin-bottom: 10px;
 }
