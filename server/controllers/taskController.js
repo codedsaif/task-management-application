@@ -1,5 +1,5 @@
 const Task = require("../models/Task.js");
-
+const checkPermissions = require("../utils/checkPermissions.js");
 const createTask = async (req, res, next) => {
   try {
     const { name, description } = req.body;
@@ -63,4 +63,25 @@ const getAllTasks = async (req, res) => {
   res.status(200).json({ tasks, totalTasks, numOfPages });
 };
 
-module.exports = { createTask, getAllTasks };
+const updateTask = async (req, res) => {
+  const { id: taskId } = req.params;
+  const { name, description, date, status } = req.body;
+  let updateTask = {};
+  if (name) updateTask.name = name;
+  if (description) updateTask.description = description;
+  if (date) updateTask.date = date;
+  if (status) updateTask.status = status;
+  const task = await Task.findOne({ _id: taskId });
+  if (!task) {
+    return res.status(404).send("Task does not exists");
+  }
+  // checking permissions
+  checkPermissions(req.user, task.createdBy);
+  const updatedTask = await Task.findOneAndUpdate({ _id: taskId }, updateTask, {
+    new: true,
+    runValidators: true,
+  });
+  res.status(200).json({ updatedTask });
+};
+
+module.exports = { createTask, getAllTasks, updateTask };
