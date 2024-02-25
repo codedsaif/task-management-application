@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import style from "../assets/styles/TaskList.module.css";
 import { ToastContainer, toast } from "react-toastify";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import ShowTaskList from "./ShowTaskList";
+import { tasksAction } from "../redux/action";
 
-const UserList = () => {
+const TaskListFun = () => {
   const [tasks, setTasks] = useState({});
   const [loading, setLoading] = useState(true);
   let timeoutId = useRef();
@@ -16,6 +17,8 @@ const UserList = () => {
     page: 1,
     limit: 5,
   });
+
+  const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
   const getTasks = async () => {
     setLoading(true);
@@ -42,6 +45,7 @@ const UserList = () => {
         `
       );
       setTasks(data);
+      tasksAction(data?.tasks, dispatch);
     } catch (error) {
       console.log("ACCOUNT ERROR", error);
       toast.error(`Something went wrong`);
@@ -49,6 +53,7 @@ const UserList = () => {
     setLoading(false);
   };
   const handleChange = (e) => {
+    console.log("HandleChangeCalled", e.target.name);
     setFilters((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -133,74 +138,16 @@ const UserList = () => {
           </select>
         </div>
       </div>
-
-      <table className={style["table"]}>
-        <thead className={style["thead"]}>
-          <tr className={style["tr"]}>
-            <th scope="col" className={style["th"]}>
-              Name
-            </th>
-            <th scope="col" className={style["th"]}>
-              Position
-            </th>
-            <th scope="col" className={style["th"]}>
-              Status
-            </th>
-            <th scope="col" className={style["th"]}>
-              Edit
-            </th>
-            <th scope="col" className={style["th"]}>
-              Delete
-            </th>
-          </tr>
-        </thead>
-        <tbody className={style["tbody"]}>
-          {tasks?.tasks?.map((task, index) => {
-            return (
-              <tr key={task?.id} className={style["tr"]}>
-                <td className={style["td"]}>{task?.name}</td>
-                <td className={style["td"]}>{task?.description}</td>
-                <td className={style["td"]}>{task?.status}</td>
-                <td className={style["td"]}>
-                  <Link className={`${style["action-link"]} ${style["edit"]}`}>
-                    Edit
-                  </Link>
-                </td>
-                <td className={style["td"]}>
-                  <button
-                    disabled={task.createdBy !== user._id}
-                    className={style["action-link"]}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <nav className={style["table-navigation"]} aria-label="Table navigation">
-        <span className={style["pagination-info"]}>
-          Showing{" "}
-          <span className={style["highlight"]}>
-            {filters.page}-{filters.page * filters.limit}
-          </span>{" "}
-          of <span className="highlight">{tasks?.totalTasks}</span>
-        </span>
-        <ul className={style["pagination"]}>
-          <li>
-            <button className={style["pagination-link"]}>Previous</button>
-          </li>
-          <li>
-            <button className={style["pagination-link"]}>1</button>
-          </li>
-          <li>
-            <button className={style["pagination-link"]}>Next</button>
-          </li>
-        </ul>
-      </nav>
+      <ShowTaskList
+        page={filters.page}
+        limit={filters.limit}
+        totalTasks={tasks?.totalTasks}
+        numOfPages={tasks?.numOfPages}
+        filters={filters}
+        handlePagination={setFilters}
+      />
     </div>
   );
 };
 
-export default UserList;
+export default TaskListFun;

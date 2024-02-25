@@ -3,7 +3,7 @@ import CreateTask from "./components/CreateTask";
 import NotFound from "./components/NotFound";
 import Home from "./components/Home";
 import Account from "./components/Account";
-import TaskList from "./components/TaskList";
+import TaskListFun from "./components/TaskListFun";
 import EditTask from "./components/EditTask";
 import ProtectedRoute from "./components/ProtuctedRoute";
 function App() {
@@ -17,7 +17,7 @@ function App() {
           </ProtectedRoute>
         }
       >
-        <Route index={true} element={<TaskList />} />
+        <Route index={true} element={<TaskListFun />} />
         <Route path="add" element={<CreateTask />} />
         <Route path="edit/:id" element={<EditTask />} />
       </Route>
