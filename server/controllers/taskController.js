@@ -30,11 +30,10 @@ const getAllTasks = async (req, res) => {
     let { search, status, sort, scope } = req.query;
     const queryObject = {};
     if (scope && scope !== "all") {
-      scope = scope.split("NOT");
-      if (scope.length < 2) {
-        queryObject.createdBy = scope[0];
+      if (scope.startsWith("OTHERS")) {
+        queryObject.createdBy = { $ne: scope.substring(6, scope.length) };
       } else {
-        queryObject.createdBy = { $ne: scope[1] };
+        queryObject.createdBy = scope;
       }
     }
     if (status && status !== "all") {
