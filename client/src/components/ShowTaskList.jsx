@@ -67,7 +67,7 @@ const ShowTaskList = ({
           {tasks?.map((task, index) => {
             const formattedDate = new Date(task?.date).toLocaleDateString();
             return (
-              <tr key={task?.id} className={style["tr"]}>
+              <tr key={task?._id} className={style["tr"]}>
                 <td className={style["td"]}>{task?.name}</td>
                 <td className={style["td"]}>{task?.description}</td>
                 <td className={style["td"]}>{task?.status}</td>

@@ -31,9 +31,11 @@ const getAllTasks = async (req, res) => {
     const queryObject = {};
     if (scope && scope !== "all") {
       if (scope.startsWith("OTHERS")) {
-        queryObject.createdBy = { $ne: scope.substring(6, scope.length) };
+        // console.log("SCOPE OTHERS", scope.substring(6));
+        queryObject.createdBy = { $ne: scope.substring(6) };
       } else {
-        queryObject.createdBy = scope;
+        // console.log("PERSONAL SCOPE", scope);
+        queryObject.createdBy = scope || "";
       }
     }
     if (status && status !== "all") {
@@ -74,39 +76,55 @@ const getAllTasks = async (req, res) => {
 };
 
 const updateTask = async (req, res) => {
-  const { id: taskId } = req.params;
-  const { name, description, date, status } = req.body;
-  let updateTask = {};
-  if (name) updateTask.name = name;
-  if (description) updateTask.description = description;
-  if (date) updateTask.date = date;
-  if (status) updateTask.status = status;
-  const task = await Task.findOne({ _id: taskId });
-  if (!task) {
-    return res.status(404).send("Task does not exists");
+  try {
+    const { id: taskId } = req.params;
+    // console.log("ID GOT FORM CLIENT", taskId);
+    const { name, description, date, status } = req.body;
+    let updateTask = {};
+    if (name) updateTask.name = name;
+    if (description) updateTask.description = description;
+    if (date) updateTask.date = date;
+    if (status) updateTask.status = status;
+    // console.log(updateTask);
+    const task = await Task.findOne({ _id: taskId });
+    if (!task) {
+      return res.status(404).send("Task does not exists");
+    }
+    // checking permissions
+    if (!checkPermissions(req.user, task.createdBy)) {
+      return res.status(401).send("Not authorized for this");
+    }
+    const updatedTask = await Task.findOneAndUpdate(
+      { _id: taskId },
+      updateTask,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    res.status(200).json({ updatedTask });
+  } catch (error) {
+    console.log("UPDATE TASK ERROR", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
-  // checking permissions
-  if (!checkPermissions(req.user, task.createdBy)) {
-    return res.status(401).send("Not authorized for this");
-  }
-  const updatedTask = await Task.findOneAndUpdate({ _id: taskId }, updateTask, {
-    new: true,
-    runValidators: true,
-  });
-  res.status(200).json({ updatedTask });
 };
 
 const deleteTask = async (req, res) => {
-  const { id: taskId } = req.params;
-  const task = await Task.findOne({ _id: taskId });
-  if (!task) {
-    return res.status(404).send("Task does not exists");
+  try {
+    const { id: taskId } = req.params;
+    const task = await Task.findOne({ _id: taskId });
+    if (!task) {
+      return res.status(404).send("Task does not exists");
+    }
+    if (!checkPermissions(req.user, task.createdBy)) {
+      return res.status(401).send("Not authorized for this");
+    }
+    await task.deleteOne();
+    res.status(200).json({ msg: "Success! Task removed" });
+  } catch (error) {
+    console.log("DELETE TASK ERROR", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
-  if (!checkPermissions(req.user, task.createdBy)) {
-    return res.status(401).send("Not authorized for this");
-  }
-  await task.deleteOne();
-  res.status(200).json({ msg: "Success! Task removed" });
 };
 
 module.exports = { createTask, getAllTasks, updateTask, deleteTask };

@@ -107,7 +107,7 @@ const TaskListFun = () => {
             onChange={handleChange}
           >
             <option value="all">Status</option>
-            <option value="process">Process</option>
+            <option value="processing">Processing</option>
             <option value="pending">Pending</option>
             <option value="completed">Completed</option>
           </select>
