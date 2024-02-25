@@ -51,10 +51,10 @@ const getAllTasks = async (req, res) => {
       result = result.sort("createdAt");
     }
     if (sort === "a-z") {
-      result = result.sort("position");
+      result = result.sort("name");
     }
     if (sort === "z-a") {
-      result = result.sort("-position");
+      result = result.sort("-name");
     }
     // setup pagination
 

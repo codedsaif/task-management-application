@@ -1,7 +1,9 @@
 import React from "react";
 import style from "../assets/styles/TaskList.module.css";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import { tasksAction } from "../redux/action";
 
 const ShowTaskList = ({
   page = 1,
@@ -11,8 +13,31 @@ const ShowTaskList = ({
   handlePagination,
   filters,
 }) => {
-  const { user, tasks } = useSelector((store) => store);
-  const handleDelete = () => {};
+  const dispatch = useDispatch();
+  let { user, tasks, token } = useSelector((store) => store);
+  const handleDelete = async (id) => {
+    try {
+      let res = await fetch(`${process.env.REACT_APP_API}/task/${id}`, {
+        method: "DELETE",
+        body: JSON.stringify({ token }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      let data = await res.json();
+      console.log(data);
+      if (data?.error) {
+        toast.error(`${data.error}`);
+        return;
+      }
+      tasks = tasks.filter((task) => task._id !== id);
+      tasksAction(tasks, dispatch);
+      toast.success(`Delete Successful`);
+    } catch (error) {
+      console.log("ACCOUNT ERROR", error);
+      toast.error(`Something went wrong`);
+    }
+  };
   return (
     <>
       <table className={style["table"]}>
