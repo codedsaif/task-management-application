@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import style from "../assets/styles/Navigation.module.css";
-import { LOGOUT, logout } from "../redux/action";
+import { logout } from "../redux/action";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 
 const Navigation = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const sidebarRef = useRef();
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
+  const handlePhoneMenu = () => {
+    setMenuOpen((prev) => !prev);
+    if (!sidebarRef.current.classList.contains(style.phone)) {
+      sidebarRef.current.classList.add(style.phone);
+    } else {
+      sidebarRef.current.classList.remove(style.phone);
+    }
+  };
   const handleLogout = () => {
     toast.success(`Logout successful ${user.name}`);
     setTimeout(() => {
@@ -15,8 +25,11 @@ const Navigation = () => {
     }, 2000);
   };
   return (
-    <div className={style.sidebar}>
+    <div ref={sidebarRef} className={`${style.sidebar}`}>
       <ToastContainer />
+      <div onClick={handlePhoneMenu} className={style.hamburger}>
+        {menuOpen ? "\u0078" : "\u2630"}
+      </div>
       <div className={style.profile}>
         <img
           src="https://source.unsplash.com/100x100/?portrait"
