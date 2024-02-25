@@ -1,6 +1,7 @@
 const User = require("../models/User.js");
 
 const signup = async (req, res, next) => {
+  // console.log("SINGUP ROUTE CALLED");
   try {
     const { name, email, password } = req.body;
 
@@ -16,12 +17,9 @@ const signup = async (req, res, next) => {
 
     const user = await User.create({ name, email, password });
     const token = user.createJWT();
-
+    // console.log("Created User", user, token);
     res.status(201).json({
-      user: {
-        email: user.email,
-        name: user.name,
-      },
+      user,
       token,
     });
   } catch (error) {
