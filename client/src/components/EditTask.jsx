@@ -31,7 +31,8 @@ const Edit = () => {
     }));
   };
 
-  const handleEdit = async () => {
+  const handleEdit = async (e) => {
+    e.preventDefault();
     setIsLoading(true);
     try {
       let res = await fetch(`${process.env.REACT_APP_API}/task/${id}`, {
@@ -48,8 +49,11 @@ const Edit = () => {
         setIsLoading(false);
         return;
       }
-      setValues({ name: "", description: "", date: "" });
       toast.success(`Task ${values.name} edited Successfully`);
+      setValues({ name: "", description: "", date: "" });
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     } catch (error) {
       console.log("EDIT ERROR", error);
       toast.error(`Something went wrong`);
