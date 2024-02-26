@@ -3,12 +3,12 @@ import style from "../assets/styles/Account.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import { ACCOUNT_SETUP, accountSetup } from "../redux/action";
+import { accountSetup } from "../redux/action";
 
 const initialState = {
   name: "",
-  email: "",
-  password: "",
+  email: "saifali27906@gmail.com",
+  password: "secret",
   isMember: true,
 };
 

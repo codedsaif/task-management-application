@@ -19,7 +19,16 @@ const TaskListFun = () => {
   });
 
   const dispatch = useDispatch();
-  const user = useSelector((store) => store.user);
+  const { user, socket } = useSelector(
+    useMemo(
+      () => (store) => ({
+        user: store.user,
+        socket: store.socket,
+      }),
+      []
+    )
+  );
+
   const getTasks = async () => {
     setLoading(true);
     try {
@@ -70,6 +79,9 @@ const TaskListFun = () => {
   const optimizedDebounce = useMemo(() => debounce(), [filters]);
   useEffect(() => {
     optimizedDebounce();
+    socket.on("get-updated-data", () => {
+      getTasks();
+    });
   }, [optimizedDebounce]);
   return (
     <div className={style["container"]}>
