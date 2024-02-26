@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import style from "../assets/styles/TaskList.module.css";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { tasksAction } from "../redux/action";
 
 const ShowTaskList = ({
@@ -14,17 +14,12 @@ const ShowTaskList = ({
   filters,
 }) => {
   const dispatch = useDispatch();
-  let { user, tasks, token, socket } = useSelector(
-    useMemo(
-      () => (store) => ({
-        user: store.user,
-        tasks: store.tasks,
-        token: store.token,
-        socket: store.socket,
-      }),
-      []
-    )
-  );
+  let { user, tasks, token, socket } = useSelector((store) => ({
+    user: store.user,
+    tasks: store.tasks,
+    token: store.token,
+    socket: store.socket,
+  }));
   const handleDelete = async (id) => {
     try {
       let res = await fetch(`${process.env.REACT_APP_API}/task/${id}`, {

@@ -78,7 +78,6 @@ io.on("connection", (socket) => {
   // });
 
   socket.on("database-update", () => {
-    console.log("database-update called");
     socket.broadcast.emit("get-updated-data");
   });
 });

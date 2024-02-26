@@ -7,8 +7,8 @@ import { accountSetup } from "../redux/action";
 
 const initialState = {
   name: "",
-  email: "saifali27906@gmail.com",
-  password: "secret",
+  email: "",
+  password: "",
   isMember: true,
 };
 

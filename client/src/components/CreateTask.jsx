@@ -13,15 +13,10 @@ const CreateTask = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { token, socket } = useSelector(
-    useMemo(
-      () => (store) => ({
-        token: store.token,
-        socket: store.socket,
-      }),
-      []
-    )
-  );
+  const { token, socket } = useSelector((store) => ({
+    token: store.token,
+    socket: store.socket,
+  }));
 
   const handleTask = async () => {
     setIsLoading(true);

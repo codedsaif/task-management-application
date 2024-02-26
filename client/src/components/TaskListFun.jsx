@@ -7,7 +7,6 @@ import { tasksAction } from "../redux/action";
 
 const TaskListFun = () => {
   const [tasks, setTasks] = useState({});
-  const [loading, setLoading] = useState(true);
   let timeoutId = useRef();
   const [filters, setFilters] = useState({
     search: "",
@@ -19,18 +18,12 @@ const TaskListFun = () => {
   });
 
   const dispatch = useDispatch();
-  const { user, socket } = useSelector(
-    useMemo(
-      () => (store) => ({
-        user: store.user,
-        socket: store.socket,
-      }),
-      []
-    )
-  );
+  const { user, socket } = useSelector((store) => ({
+    user: store.user,
+    socket: store.socket,
+  }));
 
   const getTasks = async () => {
-    setLoading(true);
     try {
       let res = await fetch(
         `${process.env.REACT_APP_API}/task?search=${filters.search}&sort=${
@@ -46,7 +39,6 @@ const TaskListFun = () => {
       console.log(data);
       if (data?.error) {
         toast.error(`${data.error}`);
-        setLoading(false);
         return;
       }
       toast.success(
@@ -59,7 +51,6 @@ const TaskListFun = () => {
       console.log("ACCOUNT ERROR", error);
       toast.error(`Something went wrong`);
     }
-    setLoading(false);
   };
   const handleChange = (e) => {
     console.log("HandleChangeCalled", e.target.name);
