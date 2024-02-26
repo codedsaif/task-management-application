@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
@@ -16,7 +16,16 @@ const Edit = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
-  const { token, tasks } = useSelector((store) => store);
+  const { token, tasks, socket } = useSelector(
+    useMemo(
+      () => (store) => ({
+        token: store.token,
+        tasks: store.tasks,
+        socket: store.socket,
+      }),
+      []
+    )
+  );
   const formattedDate = (date) => {
     const d = new Date(date);
     const year = d.getFullYear();
@@ -49,6 +58,7 @@ const Edit = () => {
         setIsLoading(false);
         return;
       }
+      socket.emit("database-update");
       toast.success(`Task ${values.name} edited Successfully`);
       setValues({ name: "", description: "", date: "" });
       setTimeout(() => {

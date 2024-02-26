@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
@@ -13,7 +13,11 @@ const CreateTask = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const token = useSelector((store) => store.token);
+  const { token, socket } = useSelector((store) => ({
+    token: store.token,
+    socket: store.socket,
+  }));
+
   const handleTask = async () => {
     setIsLoading(true);
     try {
@@ -32,6 +36,7 @@ const CreateTask = () => {
         return;
       }
       setValues({ name: "", description: "", date: "" });
+      socket.emit("database-update");
       setTimeout(() => {
         navigate("/");
       }, 3000);

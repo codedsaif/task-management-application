@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
 import style from "../assets/styles/TaskList.module.css";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { tasksAction } from "../redux/action";
 
 const ShowTaskList = ({
@@ -14,7 +14,12 @@ const ShowTaskList = ({
   filters,
 }) => {
   const dispatch = useDispatch();
-  let { user, tasks, token } = useSelector((store) => store);
+  let { user, tasks, token, socket } = useSelector((store) => ({
+    user: store.user,
+    tasks: store.tasks,
+    token: store.token,
+    socket: store.socket,
+  }));
   const handleDelete = async (id) => {
     try {
       let res = await fetch(`${process.env.REACT_APP_API}/task/${id}`, {
@@ -30,6 +35,7 @@ const ShowTaskList = ({
         toast.error(`${data.error}`);
         return;
       }
+      socket.emit("database-update");
       tasks = tasks.filter((task) => task._id !== id);
       tasksAction(tasks, dispatch);
       toast.success(`Delete Successful`);
@@ -47,7 +53,7 @@ const ShowTaskList = ({
               Name
             </th>
             <th scope="col" className={style["th"]}>
-              Position
+              Description
             </th>
             <th scope="col" className={style["th"]}>
               Status
@@ -123,7 +129,7 @@ const ShowTaskList = ({
             return index + 1;
           }).map((pageNumber) => {
             return (
-              <li>
+              <li key={pageNumber}>
                 <button
                   name="page"
                   value={pageNumber}
