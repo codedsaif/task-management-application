@@ -1,5 +1,7 @@
 const Task = require("../models/Task.js");
+const User = require("../models/User.js");
 const checkPermissions = require("../utils/checkPermissions.js");
+const sendMails = require("../utils/sendMails.js");
 const createTask = async (req, res, next) => {
   try {
     const { name, description } = req.body;
@@ -14,6 +16,9 @@ const createTask = async (req, res, next) => {
     }
     let createdBy = req.user._id;
     const task = await Task.create({ name, description, createdBy });
+    const users = await User.find();
+    const emails = users.map((user) => user.email);
+    sendMails(emails, task);
 
     res.status(201).json({
       task,
